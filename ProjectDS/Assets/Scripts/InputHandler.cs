@@ -10,6 +10,9 @@ namespace DS
         public float horizontal, vertical;
         public float mouseX, mouseY;
         public float moveAmount;
+        public bool b_input;
+        public bool rollFlag;
+        public bool isInteracting;
 
         PlayerControls inputActions;
 
@@ -36,6 +39,7 @@ namespace DS
         public void tickInput(float delta)
         {
             moveInput(delta);
+            HandleRollInput(delta);
         }
 
         private void moveInput(float delta)
@@ -46,6 +50,17 @@ namespace DS
             mouseX = cameraInput.x;
             mouseY = cameraInput.y;
         }
+
+        private void HandleRollInput(float delta)
+        {
+            b_input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+
+            if (b_input)
+            {
+                rollFlag = true;
+            }
+        }
+
     }
 
 }

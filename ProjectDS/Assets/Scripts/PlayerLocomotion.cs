@@ -15,6 +15,8 @@ namespace DS
         public Rigidbody RB;
         public GameObject normalCamera;
 
+        [HideInInspector] public AnimatorHandler AnimeHandler;
+
         [SerializeField] float movementSpeed = 2f;
         [SerializeField] float rotationSpeed = 2f;
         float _speed;
@@ -24,8 +26,10 @@ namespace DS
         {
             RB = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
+            AnimeHandler = this.transform.GetChild(0).transform.GetComponent<AnimatorHandler>();
             cameraObject = Camera.main.transform;
             myTransform = this.transform;
+            AnimeHandler.init();
             _speed = 2f;
 
         }
@@ -35,6 +39,14 @@ namespace DS
             float delta = Time.deltaTime;
             
             inputHandler.tickInput(delta);
+            
+            HandleMovement(delta);
+
+            HandleRollingAndSprinting(delta);
+        }
+
+        public void HandleMovement(float delta)
+        {
             moveDirection = cameraObject.forward * inputHandler.vertical;
             moveDirection += cameraObject.right * inputHandler.horizontal;
             moveDirection.Normalize();
@@ -45,6 +57,36 @@ namespace DS
 
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
             RB.velocity = projectedVelocity * _speed;
+
+            AnimeHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+            if (AnimeHandler.canRotate)
+            {
+                HandleRotation(delta);
+            }
+        }
+
+        public void HandleRollingAndSprinting(float delta)
+        {
+            if (AnimeHandler.anim.GetBool("isInteracting")) return;
+
+            if (inputHandler.rollFlag)
+            {
+                moveDirection = cameraObject.forward * inputHandler.vertical;
+                moveDirection += cameraObject.right * inputHandler.horizontal;
+
+                if (inputHandler.moveAmount > 0)
+                {
+                    AnimeHandler.PlayerTargetAnimation("Rolling", true);
+                    moveDirection.y = 0;
+                    Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
+                    myTransform.rotation = rollRotation;
+                }
+                else
+                {
+                    Debug.Log("Implement BackStep Animation");
+                    
+                }
+            }
         }
 
         #region Movement

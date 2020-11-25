@@ -578,7 +578,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &303075891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1886,7 +1886,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &940225482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1894,7 +1894,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 940225481}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
@@ -1913,7 +1913,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 940225481}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
@@ -1960,7 +1960,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 950121466}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.54, y: 4.0228176, z: -17.47}
+  m_LocalPosition: {x: 0.54, y: 0.17, z: -17.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1476894754}
@@ -2649,6 +2649,28 @@ PrefabInstance:
       propertyPath: m_Name
       value: paladin_prop_j_nordstrom
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 5f302a8fbc167134d935a2356030114d,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9d9fc98ac34d91a418d66756347e0744, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 5f302a8fbc167134d935a2356030114d,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 5f302a8fbc167134d935a2356030114d,
+        type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'Hips'\n\tTransform 'Spine1'\n\tTransform
+        'LeftHandMiddle2'\n\tTransform 'Neck'\n\tTransform 'LeftHandThumb1'\n\tTransform
+        'LeftHandRing2'\n\tTransform 'RightHandIndex3'\n\tTransform 'LeftHandRing3'\n\tTransform
+        'RightHandMiddle1'\n\tTransform 'LeftUpLeg'\n\tand more ...\n\tFrom animation
+        clip 'Sword And Shield Idle'\n\tFrom animation clip 'Sword And Shield Walk'\n\tFrom
+        animation clip 'Sword And Shield Run'"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f302a8fbc167134d935a2356030114d, type: 3}
 --- !u!4 &1272757971 stripped
@@ -2878,32 +2900,32 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 25cb57a7c2e367641abe699c09c69e95,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.812284
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 25cb57a7c2e367641abe699c09c69e95,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.0228176
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 25cb57a7c2e367641abe699c09c69e95,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.5425844
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 25cb57a7c2e367641abe699c09c69e95,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 25cb57a7c2e367641abe699c09c69e95,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 25cb57a7c2e367641abe699c09c69e95,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 25cb57a7c2e367641abe699c09c69e95,
         type: 3}
@@ -3219,6 +3241,9 @@ GameObject:
   - component: {fileID: 1689969423}
   - component: {fileID: 1689969424}
   - component: {fileID: 1689969422}
+  - component: {fileID: 1689969426}
+  - component: {fileID: 1689969425}
+  - component: {fileID: 1689969427}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3288,6 +3313,56 @@ CapsuleCollider:
   m_Height: 5
   m_Direction: 1
   m_Center: {x: 0, y: 2.48, z: 0}
+--- !u!114 &1689969425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689969420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47b46e24623541241bb5a408b171476c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  horizontal: 0
+  vertical: 0
+  mouseX: 0
+  mouseY: 0
+  moveAmount: 0
+  b_input: 0
+  rollFlag: 0
+  isInteracting: 0
+--- !u!114 &1689969426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689969420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e91abb2ae6ab9724c972149604afa5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTransform: {fileID: 0}
+  RB: {fileID: 0}
+  normalCamera: {fileID: 0}
+  AnimeHandler: {fileID: 0}
+  movementSpeed: 2
+  rotationSpeed: 2
+--- !u!114 &1689969427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689969420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6cec82a354487d4e99604f553b7b6ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1792198122
 GameObject:
   m_ObjectHideFlags: 0
@@ -3313,7 +3388,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1792198122}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 5.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1689969421}
@@ -3557,9 +3632,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 341b5e223abf8c24abe836bbe8c54411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eyes: {fileID: 0}
   cam: {fileID: 963194227}
   player: {fileID: 1689969421}
   parentCheckpoints: {fileID: 95024870}
+  hasAcquiredPlayer: 0
+  distance: 0
+  distanceFromPlayer: 0
+  playerNeck: {fileID: 0}
+  waitTime: 2
+  los: 0
+  whatToHit:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1823499742
 GameObject:
   m_ObjectHideFlags: 0
@@ -3860,6 +3945,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1951476554}
   m_CullTransparentMesh: 0
+--- !u!1 &1972667343 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f302a8fbc167134d935a2356030114d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1272757970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1972667344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972667343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 176c8a4ab31dc9a4a8a4bce12fe33c48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  canRotate: 1
+  inputHandler: {fileID: 0}
+  playerLoca: {fileID: 0}
 --- !u!1 &1977431440
 GameObject:
   m_ObjectHideFlags: 0
@@ -4018,7 +4125,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2026908471
 RectTransform:
   m_ObjectHideFlags: 0
