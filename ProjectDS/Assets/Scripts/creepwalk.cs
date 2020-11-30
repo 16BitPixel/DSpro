@@ -16,6 +16,7 @@ public class creepwalk : MonoBehaviour
     #endregion
 
     #region transforms
+
     public Camera cam;
     private NavMeshAgent agent;
     public Transform player;
@@ -37,11 +38,9 @@ public class creepwalk : MonoBehaviour
     [SerializeField]
     private bool los = false;
     private float angularSpeed;
-    #endregion
 
-    #region misc
-    public LayerMask whatToHit;
     #endregion
+    
     void Start() {
         agent = GetComponent<NavMeshAgent>();
         for (int i = 0; i < parentCheckpoints.childCount; i++)
@@ -95,12 +94,13 @@ public class creepwalk : MonoBehaviour
     IEnumerator Engage()
     {
         agent.angularSpeed = 0;
-        // TODO: Also check if stamina > 0.
+        
         if (agent.pathStatus == NavMeshPathStatus.PathComplete && creepstats.stamina > 0)
         {            
+            faceTarget(player.position);
             agent.stoppingDistance = 4f;
             agent.SetDestination(player.position);
-            // Attack?
+            // TODO: Attack?
         }
 
 
@@ -153,7 +153,7 @@ public class creepwalk : MonoBehaviour
         Vector3 lookAt = target - transform.position;
         lookAt.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookAt);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.5f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.9f);
     }
 
     IEnumerator waitOnNext()

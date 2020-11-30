@@ -3150,6 +3150,36 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1 &1672016463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1672016464}
+  m_Layer: 0
+  m_Name: eyes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1672016464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672016463}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.65, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1806718480}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1687841296
 GameObject:
   m_ObjectHideFlags: 0
@@ -3238,7 +3268,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1689969421}
-  - component: {fileID: 1689969423}
   - component: {fileID: 1689969424}
   - component: {fileID: 1689969422}
   - component: {fileID: 1689969426}
@@ -3285,21 +3314,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &1689969423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1689969420}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39caf6303de46644db0deb54d3de6570, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 963194228}
-  speed: 6
-  turnSmoothTime: 0.1
 --- !u!136 &1689969424
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3350,8 +3364,8 @@ MonoBehaviour:
   RB: {fileID: 0}
   normalCamera: {fileID: 0}
   AnimeHandler: {fileID: 0}
-  movementSpeed: 2
-  rotationSpeed: 2
+  movementSpeed: 6
+  rotationSpeed: 7
 --- !u!114 &1689969427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3364,6 +3378,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6cec82a354487d4e99604f553b7b6ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
+  healthCap: 0
+  stamina: 0
+  staminaCap: 100
+  isRunning: 0
 --- !u!114 &1689969428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3608,6 +3627,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1131906778}
+  - {fileID: 1672016464}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3622,7 +3642,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 40
-  m_Acceleration: 40
+  m_Acceleration: 90
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -3645,19 +3665,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 341b5e223abf8c24abe836bbe8c54411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eyes: {fileID: 0}
+  eyes: {fileID: 1672016464}
   cam: {fileID: 963194227}
   player: {fileID: 1689969421}
   parentCheckpoints: {fileID: 95024870}
   hasAcquiredPlayer: 0
   distance: 0
-  distanceFromPlayer: 0
-  playerNeck: {fileID: 0}
+  distanceFromPlayer: 50
+  playerNeck: {fileID: 2008553408}
   waitTime: 2
   los: 0
-  whatToHit:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &1823499742
 GameObject:
   m_ObjectHideFlags: 0

@@ -83,8 +83,7 @@ namespace DS
                 }
                 else
                 {
-                    Debug.Log("Implement BackStep Animation");
-                    
+                    Debug.Log("Implement BackStep Animation");                    
                 }
             }
         }

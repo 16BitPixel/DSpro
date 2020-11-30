@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace DS
 {
-
     public class InputHandler : MonoBehaviour
     {
         public float horizontal, vertical;
