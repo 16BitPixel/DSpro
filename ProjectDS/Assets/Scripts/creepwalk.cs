@@ -13,6 +13,8 @@ public class creepwalk : MonoBehaviour
     }
     static Stats creepstats;
     public Transform eyes;
+
+    public float rotationSpeed;
     #endregion
 
     #region transforms
@@ -110,7 +112,7 @@ public class creepwalk : MonoBehaviour
             agent.stoppingDistance = 10f;            
             agent.SetDestination(player.position);
             // Set animation to walk/run?
-            yield return new WaitForSeconds(1f);                        
+            yield return new WaitForSeconds(0f);                        
             StartCoroutine(Engage());
         }        
         else
@@ -150,10 +152,10 @@ public class creepwalk : MonoBehaviour
 
     private void faceTarget(Vector3 target)
     {
-        Vector3 lookAt = target - transform.position;
+       Vector3 lookAt = target - transform.position;
         lookAt.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookAt);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.9f);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, Time.time * rotationSpeed);
     }
 
     IEnumerator waitOnNext()
