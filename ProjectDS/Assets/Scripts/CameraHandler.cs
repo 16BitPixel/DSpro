@@ -63,14 +63,14 @@ namespace DS
            
         }
 
-        public void PlayerCamera(float delta, float mouseX, float mouseY)  // Test Function...
-        {
-            lookAngle += (mouseX * lookSpeed) / delta;
-            pivotAngle -= (mouseY * pivotSpeed) / delta;
-            pivotAngle = Mathf.Clamp(pivotAngle, minPivot, maxPivot);
-            Quaternion rotatePlayer = Quaternion.AngleAxis(lookAngle, playerAvatar.transform.up);
-            myTransform.rotation = rotatePlayer;
-        }
+       // public void PlayerCamera(float delta, float mouseX, float mouseY)  // Test Function...
+       // {
+       //     lookAngle += (mouseX * lookSpeed) / delta;
+       //     pivotAngle -= (mouseY * pivotSpeed) / delta;
+       //     pivotAngle = Mathf.Clamp(pivotAngle, minPivot, maxPivot);
+       //     Quaternion rotatePlayer = Quaternion.AngleAxis(lookAngle, playerAvatar.transform.up);
+       //     myTransform.rotation = rotatePlayer;
+       // }
     }
 }
 
