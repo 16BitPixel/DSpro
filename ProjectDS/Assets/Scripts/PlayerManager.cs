@@ -16,6 +16,8 @@ namespace DS {
         InputHandler inputHandler;
         Animator anim;
 
+        public RectTransform healthBar;
+        public RectTransform staminaBar;
         
         void Start()
         {
@@ -23,7 +25,7 @@ namespace DS {
             anim = GetComponentInChildren<Animator>();
             
             health = healthCap;
-            stamina = staminaCap;
+            stamina = 0;
         }
 
         // Update is called once per frame
@@ -31,8 +33,11 @@ namespace DS {
         {
             inputHandler.isInteracting = anim.GetBool("isInteracting");
             inputHandler.rollFlag = false;
-            
-            replenishStamina(10f);
+
+
+            // Stamina bar tests
+            // replenishStamina(45f);
+            // drainStamina(25f);
         }
 
         #region stat modifiers
@@ -48,18 +53,20 @@ namespace DS {
             {                
                 stamina -= drainRate * Time.deltaTime;
             }
+
+            // Update UI
+            updateBar(stamina, staminaCap, staminaBar);
         }
         
         // Function is called once every time the player object is hit/damaged by an enemy. Object is destroyed when health hits 0.
         public void takeDamage(float damageVal)
-        {
-            
-            
+        {                        
             health -= damageVal;
             if (health <= 0)
             {
                 // TODO: Death animation.
             }
+            updateBar(health, healthCap, healthBar);
         }
 
         // Function is called once per frame for when the character is not sprinting, ie - isRunning = false;
@@ -73,12 +80,25 @@ namespace DS {
             {
                 stamina = staminaCap;
             }
+            // Update UI
+            updateBar(stamina, staminaCap, staminaBar);
         }
         
         public void heal(float healAmount)
         {
             // TODO: Smooth out healing linearly based on heal amount.
-            health = Mathf.Clamp(health + healAmount, 0, healthCap);            
+            health = Mathf.Clamp(health + healAmount, 0, healthCap);     
+            // Update UI
+            updateBar(health, healthCap, healthBar);
+        }
+        #endregion
+
+        #region UI stuff
+
+        private void updateBar(float numerator, float denominator, RectTransform bar)
+        {
+            float percentage = -1f * numerator / denominator;
+            bar.localScale = new Vector3(percentage, bar.localScale.y, bar.localScale.z);
         }
         #endregion
     }

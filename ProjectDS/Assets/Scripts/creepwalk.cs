@@ -6,13 +6,10 @@ using System.Linq;
 public class creepwalk : MonoBehaviour
 {
     #region Enemy derived calculations
-    public class Stats{
-        public int health;
-        public float stamina;
-        public float baseDamage;
-    }
-    static Stats creepstats;
+  
     public Transform eyes;
+    static CreepStats stats;
+    public float rotationSpeed;
     #endregion
 
     #region transforms
@@ -49,8 +46,8 @@ public class creepwalk : MonoBehaviour
         }
         nextCheckpoint = 0;
         hasAcquiredPlayer = false;        
-        creepstats = new Stats();
         angularSpeed = agent.angularSpeed;        
+        stats = new CreepStats();
 
     }
     void Update()
@@ -73,6 +70,8 @@ public class creepwalk : MonoBehaviour
     }
     IEnumerator Patrol()
     {
+        // Replenish stamina when not in engage mode
+        stats.replenishStamina(40f);
         if (hasAcquiredPlayer && !los)
         {            
             StartCoroutine(waitOnNext());
@@ -95,22 +94,46 @@ public class creepwalk : MonoBehaviour
     {
         agent.angularSpeed = 0;
         
-        if (agent.pathStatus == NavMeshPathStatus.PathComplete && creepstats.stamina > 0)
+        if (agent.pathStatus == NavMeshPathStatus.PathComplete && stats.getStamina() > 0)
         {            
             faceTarget(player.position);
             agent.stoppingDistance = 4f;
             agent.SetDestination(player.position);
             // TODO: Attack?
+            bool attackType = Random.value > 0.55f;
+            if (attackType)
+            {
+                // TODO: light attack
+                stats.removeStamina(35f);
+            }
+            else
+            {
+                // TODO: heavy attack
+                stats.removeStamina(60f);
+            }
+            StartCoroutine(Engage());
         }
 
+        else if(stats.getStamina() < 0.05f * stats.staminaCap)
+        {
+            while (stats.getStamina() <= 0.95f * stats.staminaCap)
+            {
+                faceTarget(player.position);
+            // Stay a safe distance from the player.
+                agent.stoppingDistance = 20f;
+                agent.SetDestination(player.position);
+                stats.replenishStamina(35f);
+            }
+            StartCoroutine(Engage());
+        }
 
-        if (hasAcquiredPlayer)
+        else if (hasAcquiredPlayer)
         {
             faceTarget(player.position);
             agent.stoppingDistance = 10f;            
             agent.SetDestination(player.position);
             // Set animation to walk/run?
-            yield return new WaitForSeconds(1f);                        
+            yield return new WaitForSeconds(0f);                        
             StartCoroutine(Engage());
         }        
         else
@@ -118,7 +141,7 @@ public class creepwalk : MonoBehaviour
             Debug.Log("Stopping");            
             agent.stoppingDistance = 0f;
             agent.ResetPath();            
-        }                                
+        }    
     }
 
     private bool inLineOfSight()
@@ -150,10 +173,10 @@ public class creepwalk : MonoBehaviour
 
     private void faceTarget(Vector3 target)
     {
-        Vector3 lookAt = target - transform.position;
-        lookAt.y = 0;
-        Quaternion rotation = Quaternion.LookRotation(lookAt);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.9f);
+       Vector3 lookAt = target - transform.position;
+       lookAt.y = 0;
+       Quaternion rotation = Quaternion.LookRotation(lookAt);
+       transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, Time.time * rotationSpeed);
     }
 
     IEnumerator waitOnNext()
