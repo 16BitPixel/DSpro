@@ -1359,6 +1359,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 683740835}
+  - component: {fileID: 683740836}
   m_Layer: 0
   m_Name: camera
   m_TagString: Untagged
@@ -1381,6 +1382,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &683740836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683740834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d371263592efb9448986cd16ae5feaac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAvatar: {fileID: 1689969420}
+  targetTransform: {fileID: 1689969421}
+  cameraTransform: {fileID: 963194228}
+  cameraPivotTransform: {fileID: 2033671007}
+  lookSpeed: 0.1
+  followSpeed: 0.1
+  pivotSpeed: 0.03
+  defaultPosition: 0
+  minPivot: -35
+  maxPivot: 35
 --- !u!1 &704569796
 GameObject:
   m_ObjectHideFlags: 0
