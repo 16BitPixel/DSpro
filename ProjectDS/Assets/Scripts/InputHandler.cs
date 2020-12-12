@@ -30,8 +30,8 @@ namespace DS
 
             if(cameraHandler != null)
             {
-                cameraHandler.FollowTarget(delta);
-                cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
+                cameraHandler.FollowTarget(delta, mouseX);
+                cameraHandler.HandleCameraRotationVertical(delta, mouseX, mouseY);
             }
         }
 
