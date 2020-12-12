@@ -51,11 +51,12 @@ public class creepwalk : MonoBehaviour
         hasAcquiredPlayer = false;        
         angularSpeed = agent.angularSpeed;
         stats = GetComponent<CreepStats>();
+        StartCoroutine(Patrol());
+        agent.updateRotation = false;
     }
     void Update()
     {
-        
-        StartCoroutine(Patrol());        
+                 
         distance = Vector3.Distance(player.position, transform.position);        
         if (distance < distanceFromPlayer)
         {            
@@ -65,12 +66,11 @@ public class creepwalk : MonoBehaviour
         {            
             hasAcquiredPlayer = false;
             los = false;
-            agent.angularSpeed = angularSpeed;
-            StartCoroutine(Patrol());            
+            agent.angularSpeed = angularSpeed;            
         } 
     }
     IEnumerator Patrol()
-    {
+    {        
         // Replenish stamina when not in engage mode
         stats.replenishStamina(40f);
         if (hasAcquiredPlayer && !los)
@@ -82,15 +82,19 @@ public class creepwalk : MonoBehaviour
                 StartCoroutine(Engage());
             }                                   
         }
+        if (!agent.isStopped)
+        {
+            faceTarget(checkpoints.ElementAt(nextCheckpoint).transform.position);
+        }
         if(!agent.hasPath && checkpoints != null)
         {
             nextCheckpoint = Random.Range(0, checkpoints.Count);               
             faceTarget(checkpoints.ElementAt(nextCheckpoint).transform.position);
-            agent.SetDestination(checkpoints.ElementAt(nextCheckpoint).position);            
-            
-            yield return new WaitForSeconds(waitTime);            
-            StartCoroutine(Patrol());
+            agent.SetDestination(checkpoints.ElementAt(nextCheckpoint).position);                        
         }
+        yield return new WaitForSeconds(waitTime);
+        StartCoroutine(Patrol());
+        
     }
 
     IEnumerator Engage()
@@ -116,7 +120,6 @@ public class creepwalk : MonoBehaviour
             }
             StartCoroutine(Engage());
         }
-
         else if(stats.getStamina() < 0.05f * stats.staminaCap)
         {
             while (stats.getStamina() <= 0.95f * stats.staminaCap)
@@ -129,7 +132,6 @@ public class creepwalk : MonoBehaviour
             }
             StartCoroutine(Engage());
         }
-
         else if (hasAcquiredPlayer)
         {
             faceTarget(player.position);
@@ -144,6 +146,7 @@ public class creepwalk : MonoBehaviour
             Debug.Log("Stopping");            
             agent.stoppingDistance = 0f;
             agent.ResetPath();            
+            StartCoroutine(Patrol());
         }    
     }
 
@@ -176,16 +179,19 @@ public class creepwalk : MonoBehaviour
 
     private void faceTarget(Vector3 target)
     {
-       Vector3 lookAt = target - transform.position;
-    //    lookAt.x = 0;
-    //    lookAt.z = 0;
-       Quaternion rotation = Quaternion.LookRotation(lookAt);
-       transform.rotation = Quaternion.Slerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+                
+        Vector3 lookAt = target - transform.position;       
+        lookAt.y = 0;
+        Quaternion rotation = Quaternion.LookRotation(lookAt);            
+        Debug.Log(rotation);
+        if (Mathf.Abs(Quaternion.Angle(transform.rotation, rotation)) >= 0.9f)
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime / rotationSpeed);        
+
+       
     }
 
     IEnumerator waitOnNext()
     {
         yield return new WaitForSeconds(waitTime);        
     }
-    
 }
