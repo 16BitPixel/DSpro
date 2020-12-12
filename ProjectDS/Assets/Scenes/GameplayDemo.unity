@@ -2272,6 +2272,31 @@ Transform:
   m_Father: {fileID: 95024870}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1067112617 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 558ba622ac2bdeb4a85810b7432191c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1131906777}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1067112618 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 558ba622ac2bdeb4a85810b7432191c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1131906777}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1067112619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067112617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74026dc564e9a294d9f6c3bbb4865009, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 1806718481}
 --- !u!1 &1088462440
 GameObject:
   m_ObjectHideFlags: 0
@@ -2366,7 +2391,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 558ba622ac2bdeb4a85810b7432191c2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 44.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 558ba622ac2bdeb4a85810b7432191c2,
         type: 3}
@@ -2411,7 +2436,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 558ba622ac2bdeb4a85810b7432191c2,
         type: 3}
       propertyPath: m_Name
-      value: mutant@Stand To Roll
+      value: mainBody
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 558ba622ac2bdeb4a85810b7432191c2,
         type: 3}
@@ -2428,6 +2453,11 @@ PrefabInstance:
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 9000000, guid: 558ba622ac2bdeb4a85810b7432191c2, type: 3}
+    - target: {fileID: 5866666021909216657, guid: 558ba622ac2bdeb4a85810b7432191c2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 558ba622ac2bdeb4a85810b7432191c2, type: 3}
 --- !u!4 &1131906778 stripped
@@ -3611,6 +3641,7 @@ GameObject:
   - component: {fileID: 1806718481}
   - component: {fileID: 1806718482}
   - component: {fileID: 1806718483}
+  - component: {fileID: 1806718484}
   m_Layer: 0
   m_Name: Creep
   m_TagString: Untagged
@@ -3644,7 +3675,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 40
+  m_Speed: 0
   m_Acceleration: 90
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -3679,6 +3710,7 @@ MonoBehaviour:
   playerNeck: {fileID: 2008553408}
   waitTime: 0
   los: 0
+  anim: {fileID: 1067112618}
 --- !u!136 &1806718483
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3688,11 +3720,25 @@ CapsuleCollider:
   m_GameObject: {fileID: 1806718479}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 1.7240505
   m_Height: 7.063555
   m_Direction: 1
   m_Center: {x: -0.26534653, y: 3.0317774, z: 0}
+--- !u!114 &1806718484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1806718479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25569682acfaa334ba7a6ebc2fc233c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthCap: 0
+  staminaCap: 0
 --- !u!1 &1823499742
 GameObject:
   m_ObjectHideFlags: 0
@@ -6818,6 +6864,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Shooter
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277383606898882671, guid: e7bb22fdd895d8c4c805b798ad427788,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7bb22fdd895d8c4c805b798ad427788, type: 3}

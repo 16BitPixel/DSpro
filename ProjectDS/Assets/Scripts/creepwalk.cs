@@ -38,6 +38,9 @@ public class creepwalk : MonoBehaviour
 
     #endregion
     
+    #region  misc
+    public Animator anim;
+    #endregion
     void Start() {
         agent = GetComponent<NavMeshAgent>();
         for (int i = 0; i < parentCheckpoints.childCount; i++)
@@ -46,16 +49,14 @@ public class creepwalk : MonoBehaviour
         }
         nextCheckpoint = 0;
         hasAcquiredPlayer = false;        
-        angularSpeed = agent.angularSpeed;        
-        stats = new CreepStats();
-
+        angularSpeed = agent.angularSpeed;
+        stats = GetComponent<CreepStats>();
     }
     void Update()
     {
         
         StartCoroutine(Patrol());        
-        distance = Vector3.Distance(player.position, transform.position);
-        
+        distance = Vector3.Distance(player.position, transform.position);        
         if (distance < distanceFromPlayer)
         {            
             hasAcquiredPlayer  = true;                
@@ -82,9 +83,11 @@ public class creepwalk : MonoBehaviour
             }                                   
         }
         if(!agent.hasPath && checkpoints != null)
-        {           
+        {
             nextCheckpoint = Random.Range(0, checkpoints.Count);               
+            faceTarget(checkpoints.ElementAt(nextCheckpoint).transform.position);
             agent.SetDestination(checkpoints.ElementAt(nextCheckpoint).position);            
+            
             yield return new WaitForSeconds(waitTime);            
             StartCoroutine(Patrol());
         }
@@ -92,8 +95,8 @@ public class creepwalk : MonoBehaviour
 
     IEnumerator Engage()
     {
-        agent.angularSpeed = 0;
-        
+        // agent.angularSpeed = 0;
+        Debug.Log("Engage");
         if (agent.pathStatus == NavMeshPathStatus.PathComplete && stats.getStamina() > 0)
         {            
             faceTarget(player.position);
@@ -174,13 +177,15 @@ public class creepwalk : MonoBehaviour
     private void faceTarget(Vector3 target)
     {
        Vector3 lookAt = target - transform.position;
-       lookAt.y = 0;
+    //    lookAt.x = 0;
+    //    lookAt.z = 0;
        Quaternion rotation = Quaternion.LookRotation(lookAt);
-       transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, Time.time * rotationSpeed);
+       transform.rotation = Quaternion.Slerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
     }
 
     IEnumerator waitOnNext()
     {
         yield return new WaitForSeconds(waitTime);        
     }
+    
 }

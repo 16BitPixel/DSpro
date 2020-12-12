@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CreepStats : MonoBehaviour
 {
+    
     private float health;
     public float healthCap;
 
@@ -11,7 +12,7 @@ public class CreepStats : MonoBehaviour
     public float staminaCap;
     private void Awake() {
         stamina = staminaCap;
-        health = healthCap;
+        health = healthCap;        
     }
 
     public void drainStamina(float drainRate)
