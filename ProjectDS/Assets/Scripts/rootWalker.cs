@@ -10,10 +10,20 @@ public class rootWalker : MonoBehaviour
 
     private void Awake() {
         anim = GetComponent<Animator>();        
+        // anim.SetBool("isAttacking", true);
     }
     private void OnAnimatorMove() {
-        agent.speed = (anim.deltaPosition / Time.deltaTime).magnitude;
-        transform.position = agent.nextPosition;
-        anim.SetFloat("moveSpeed", agent.speed);
+        bool isAttacking = anim.GetBool("isAttacking");
+        if(!isAttacking)
+        {
+            agent.speed = (anim.deltaPosition / Time.deltaTime).magnitude;            
+            anim.SetBool("isMoving", true);
+        }   
+        else
+        {
+            agent.speed = 0;
+            anim.SetBool("isMoving", false);
+        }   
+        transform.position = agent.nextPosition;  
     }
 }

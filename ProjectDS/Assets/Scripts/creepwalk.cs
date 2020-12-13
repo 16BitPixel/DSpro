@@ -6,10 +6,78 @@ using System.Linq;
 public class creepwalk : MonoBehaviour
 {
     #region Enemy derived calculations
-  
+    
+    public class CreepStats
+    {
+        // Ssssss
+        private float health;
+        public float healthCap;
+
+        [SerializeField]
+        private float stamina; 
+        [SerializeField]
+        public float staminaCap;
+        
+
+
+        public void drainStamina(float drainRate)
+        {
+            if (stamina <=0)
+            {
+                stamina = 0;
+            }
+            else
+            {
+                stamina -= drainRate * Time.deltaTime;
+            }
+        }
+
+        public void removeStamina(float amount)
+        {
+            stamina = (stamina - amount <=0) ? 0 : stamina - amount;
+        }
+
+        public void takeDamage(float damage)
+        {
+            health = (health - damage <= 0) ? 0 : health - damage;
+        }
+
+        public void heal(float healAmount)
+        {
+            health = (health + healAmount >= healthCap) ? healthCap : health + healAmount;
+        }
+
+        public void replenishStamina(float replenishRate)
+        {
+            if (stamina >= staminaCap)
+            {
+                stamina = staminaCap;
+            }
+            else
+            {
+                stamina += replenishRate * Time.deltaTime;
+            }
+        }
+
+        public float getStamina()
+        {
+            return stamina;
+        }
+        public float getHealth()
+        {
+            return health;
+        }
+    }
+
     public Transform eyes;
-    static CreepStats stats;
+
+    [SerializeReference]
+    public CreepStats stats;    
+
     public float rotationSpeed;
+
+    public float leashThreshold;
+    public float combatThreshold;
     #endregion
 
     #region transforms
@@ -50,9 +118,12 @@ public class creepwalk : MonoBehaviour
         nextCheckpoint = 0;
         hasAcquiredPlayer = false;        
         angularSpeed = agent.angularSpeed;
-        stats = GetComponent<CreepStats>();
+        stats = new CreepStats();
+        stats.healthCap = 100f;
+        stats.staminaCap = 100f;
+        // agent.updateRotation = false;
         StartCoroutine(Patrol());
-        agent.updateRotation = false;
+        
     }
     void Update()
     {
@@ -70,84 +141,90 @@ public class creepwalk : MonoBehaviour
         } 
     }
     IEnumerator Patrol()
-    {        
+    {
+        Debug.Log("Patrolling");  
         // Replenish stamina when not in engage mode
-        stats.replenishStamina(40f);
-        if (hasAcquiredPlayer && !los)
-        {            
-            StartCoroutine(waitOnNext());
-            los = inLineOfSight();
-            if (los)
+        bool patrolling = true;
+        while(patrolling)
+        {
+            stats.replenishStamina(10f);
+            if (hasAcquiredPlayer && !los)
+            {            
+                StartCoroutine(waitOnNext());
+                los = inLineOfSight();
+                if (los)
+                {
+                    // StartCoroutine(Engage());
+                    patrolling = false;
+                    break;
+                }                                   
+            }
+            if (!agent.isStopped)
             {
-                StartCoroutine(Engage());
-            }                                   
+                // faceTarget(checkpoints.ElementAt(nextCheckpoint).transform.position);
+            }
+            if(!agent.hasPath && checkpoints != null)
+            {
+                nextCheckpoint = Random.Range(0, checkpoints.Count);               
+                // faceTarget(checkpoints.ElementAt(nextCheckpoint).transform.position);
+                agent.SetDestination(checkpoints.ElementAt(nextCheckpoint).position);                        
+            }
+            yield return new WaitForSeconds(waitTime);
         }
-        if (!agent.isStopped)
-        {
-            faceTarget(checkpoints.ElementAt(nextCheckpoint).transform.position);
-        }
-        if(!agent.hasPath && checkpoints != null)
-        {
-            nextCheckpoint = Random.Range(0, checkpoints.Count);               
-            faceTarget(checkpoints.ElementAt(nextCheckpoint).transform.position);
-            agent.SetDestination(checkpoints.ElementAt(nextCheckpoint).position);                        
-        }
-        yield return new WaitForSeconds(waitTime);
-        StartCoroutine(Patrol());
-        
+        StartCoroutine(Engage());
+        yield return null;                
     }
 
     IEnumerator Engage()
     {
-        // agent.angularSpeed = 0;
-        Debug.Log("Engage");
-        if (agent.pathStatus == NavMeshPathStatus.PathComplete && stats.getStamina() > 0)
-        {            
+        rotationSpeed = 9000;
+        bool engaging = true;
+        Debug.Log("Engaging");
+        while(engaging)
+        {
             faceTarget(player.position);
-            agent.stoppingDistance = 4f;
-            agent.SetDestination(player.position);
-            // TODO: Attack?
-            bool attackType = Random.value > 0.55f;
-            if (attackType)
+            if (!los)
             {
-                // TODO: light attack
-                stats.removeStamina(35f);
+                engaging = false;        
+                agent.ResetPath();        
+                StartCoroutine(Patrol());                
+                break;
+            }
+            if (distance > leashThreshold)
+            {
+                anim.SetBool("isAttacking", false);
+                anim.SetInteger("attackType", -1);         
+                
+                agent.stoppingDistance = 20f;
+                agent.SetDestination(player.position);
             }
             else
             {
-                // TODO: heavy attack
-                stats.removeStamina(60f);
-            }
-            StartCoroutine(Engage());
+                // Commence attacking
+                if (distance > combatThreshold)
+                {
+                    anim.SetBool("isAttacking", false);
+                    anim.SetInteger("attackType", -1);
+                    // faceTarget(player.position);
+                    // The distance at which to stop from the player.
+                    agent.stoppingDistance = 7f;
+                    agent.SetDestination(player.position);
+                }
+                else
+                {
+                    if(stats.getStamina() > 0)
+                    {
+                        int attackType = Random.Range(0, 3);
+                        anim.SetInteger("attackType", attackType);
+                        anim.SetBool("isAttacking", true);
+                        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length+anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                        anim.SetInteger("attackType", -1);
+                    }
+                }
+            }                                                
+            yield return new WaitForSeconds(waitTime);
         }
-        else if(stats.getStamina() < 0.05f * stats.staminaCap)
-        {
-            while (stats.getStamina() <= 0.95f * stats.staminaCap)
-            {
-                faceTarget(player.position);
-            // Stay a safe distance from the player.
-                agent.stoppingDistance = 20f;
-                agent.SetDestination(player.position);
-                stats.replenishStamina(35f);
-            }
-            StartCoroutine(Engage());
-        }
-        else if (hasAcquiredPlayer)
-        {
-            faceTarget(player.position);
-            agent.stoppingDistance = 10f;            
-            agent.SetDestination(player.position);
-            // Set animation to walk/run?
-            yield return new WaitForSeconds(0f);                        
-            StartCoroutine(Engage());
-        }        
-        else
-        {
-            Debug.Log("Stopping");            
-            agent.stoppingDistance = 0f;
-            agent.ResetPath();            
-            StartCoroutine(Patrol());
-        }    
+        yield return null;
     }
 
     private bool inLineOfSight()
@@ -183,9 +260,8 @@ public class creepwalk : MonoBehaviour
         Vector3 lookAt = target - transform.position;       
         lookAt.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookAt);            
-        Debug.Log(rotation);
         if (Mathf.Abs(Quaternion.Angle(transform.rotation, rotation)) >= 0.9f)
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime / rotationSpeed);        
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, Time.deltaTime * rotationSpeed);        
 
        
     }

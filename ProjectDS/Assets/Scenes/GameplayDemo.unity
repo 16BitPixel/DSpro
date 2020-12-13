@@ -2309,9 +2309,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1067112617}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74026dc564e9a294d9f6c3bbb4865009, type: 3}
+  m_Script: {fileID: 11500000, guid: e23d2fb7e75ae8946913ec2ac533a84b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 1806718481}
 --- !u!1 &1088462440
 GameObject:
   m_ObjectHideFlags: 0
@@ -2411,22 +2412,22 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 558ba622ac2bdeb4a85810b7432191c2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 558ba622ac2bdeb4a85810b7432191c2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.13764903
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 558ba622ac2bdeb4a85810b7432191c2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 558ba622ac2bdeb4a85810b7432191c2,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99048114
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 558ba622ac2bdeb4a85810b7432191c2,
         type: 3}
@@ -2441,7 +2442,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 558ba622ac2bdeb4a85810b7432191c2,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -15.824
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 558ba622ac2bdeb4a85810b7432191c2,
         type: 3}
@@ -3346,7 +3347,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1689969420}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.1, y: 0.1, z: 26.2}
+  m_LocalPosition: {x: -6.47, y: 0.1, z: 26.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6495678935539635129}
@@ -3656,7 +3657,6 @@ GameObject:
   - component: {fileID: 1806718481}
   - component: {fileID: 1806718482}
   - component: {fileID: 1806718483}
-  - component: {fileID: 1806718484}
   m_Layer: 0
   m_Name: Creep
   m_TagString: Untagged
@@ -3672,7 +3672,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1806718479}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29.78, y: 0, z: 26.6}
+  m_LocalPosition: {x: -1.61, y: 0, z: 26.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1131906778}
@@ -3689,7 +3689,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1806718479}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 4
   m_Speed: 0
   m_Acceleration: 90
   avoidancePriority: 50
@@ -3715,7 +3715,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eyes: {fileID: 1672016464}
-  rotationSpeed: 0
+  stats:
+    id: 0
+  rotationSpeed: 90
+  leashThreshold: 25
+  combatThreshold: 10
   cam: {fileID: 963194227}
   player: {fileID: 1689969421}
   parentCheckpoints: {fileID: 95024870}
@@ -3726,6 +3730,10 @@ MonoBehaviour:
   waitTime: 0
   los: 0
   anim: {fileID: 1067112618}
+  references:
+    version: 1
+    00000000:
+      type: {class: , ns: , asm: }
 --- !u!136 &1806718483
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3740,18 +3748,6 @@ CapsuleCollider:
   m_Height: 7.063555
   m_Direction: 1
   m_Center: {x: -0.26534653, y: 3.0317774, z: 0}
---- !u!114 &1806718484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1806718479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25569682acfaa334ba7a6ebc2fc233c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1823499742
 GameObject:
   m_ObjectHideFlags: 0
@@ -6881,7 +6877,7 @@ PrefabInstance:
     - target: {fileID: 8277383606898882671, guid: e7bb22fdd895d8c4c805b798ad427788,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7bb22fdd895d8c4c805b798ad427788, type: 3}
