@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
+using UnityEngine.Events;
+
 public class creepwalk : MonoBehaviour
 {
     #region Enemy derived calculations
@@ -11,15 +13,15 @@ public class creepwalk : MonoBehaviour
     {
         // Ssssss
         private float health;
+
         public float healthCap;
 
         [SerializeField]
         private float stamina; 
+
         [SerializeField]
         public float staminaCap;
         
-
-
         public void drainStamina(float drainRate)
         {
             if (stamina <=0)
@@ -74,6 +76,7 @@ public class creepwalk : MonoBehaviour
     [SerializeReference]
     public CreepStats stats;    
 
+    public float dmgVal;
     public float rotationSpeed;
 
     public float leashThreshold;
@@ -127,8 +130,8 @@ public class creepwalk : MonoBehaviour
     }
     void Update()
     {
-                 
-        distance = Vector3.Distance(player.position, transform.position);        
+        if (player != null)      
+            distance = Vector3.Distance(player.position, transform.position);        
         if (distance < distanceFromPlayer)
         {            
             hasAcquiredPlayer  = true;                
@@ -149,8 +152,7 @@ public class creepwalk : MonoBehaviour
         {
             stats.replenishStamina(10f);
             if (hasAcquiredPlayer && !los)
-            {            
-                StartCoroutine(waitOnNext());
+            {                            
                 los = inLineOfSight();
                 if (los)
                 {
@@ -182,7 +184,8 @@ public class creepwalk : MonoBehaviour
         Debug.Log("Engaging");
         while(engaging)
         {
-            faceTarget(player.position);
+            if (player != null)
+                faceTarget(player.position);
             if (!los)
             {
                 engaging = false;        
@@ -201,22 +204,25 @@ public class creepwalk : MonoBehaviour
             else
             {
                 // Commence attacking
-                if (distance > combatThreshold)
+                if (distance >= combatThreshold)
                 {
                     anim.SetBool("isAttacking", false);
                     anim.SetInteger("attackType", -1);
                     // faceTarget(player.position);
                     // The distance at which to stop from the player.
-                    agent.stoppingDistance = 7f;
+                    agent.stoppingDistance = combatThreshold;
                     agent.SetDestination(player.position);
                 }
                 else
                 {
+                    agent.velocity = Vector3.zero;
+                    agent.isStopped = true;
+                    agent.ResetPath();
                     if(stats.getStamina() > 0)
                     {
                         int attackType = Random.Range(0, 3);
                         anim.SetInteger("attackType", attackType);
-                        anim.SetBool("isAttacking", true);
+                        anim.SetBool("isAttacking", true);                        
                         yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length+anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
                         anim.SetInteger("attackType", -1);
                     }
@@ -266,8 +272,5 @@ public class creepwalk : MonoBehaviour
        
     }
 
-    IEnumerator waitOnNext()
-    {
-        yield return new WaitForSeconds(waitTime);        
-    }
+    
 }
