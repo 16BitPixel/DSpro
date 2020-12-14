@@ -61,10 +61,16 @@ namespace DS {
         // Function is called once every time the player object is hit/damaged by an enemy. Object is destroyed when health hits 0.
         public void takeDamage(float damageVal)
         {                        
-            health -= damageVal;
-            if (health <= 0)
+            float target = health - damageVal;
+            while (health > target && target > 0)
             {
-                // TODO: Death animation.
+                health -= Time.deltaTime;
+                updateBar(health, healthCap, healthBar);
+            }
+            health = target > 0 ? target : 0;
+            if (health == 0)
+            {
+                Destroy(this.gameObject);
             }
             updateBar(health, healthCap, healthBar);
         }
@@ -99,6 +105,11 @@ namespace DS {
         {
             float percentage = -1f * numerator / denominator;
             bar.localScale = new Vector3(percentage, bar.localScale.y, bar.localScale.z);
+        }
+
+        public void testDamage()
+        {
+            Debug.Log("Damaged!");
         }
         #endregion
     }
