@@ -52,7 +52,8 @@ namespace DS
             cameraHolderTransform.transform.rotation = rot;
             safeDistance = rot * safeDistance;
             cameraHolderTransform.LookAt(targetTransform);
-        } 
+        }
+
 
         public void HandleCameraRotationVertical(float delta, float mouseX, float mouseY) // handles vertical look
         {
