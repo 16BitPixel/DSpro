@@ -25,7 +25,7 @@ namespace DS {
             anim = GetComponentInChildren<Animator>();
             
             health = healthCap;
-            stamina = 0;
+            stamina = staminaCap;
         }
 
         // Update is called once per frame
@@ -36,8 +36,7 @@ namespace DS {
 
 
             // Stamina bar tests
-            // replenishStamina(45f);
-            // drainStamina(25f);
+            // replenishStamina(45f);            
         }
 
         #region stat modifiers
@@ -89,6 +88,13 @@ namespace DS {
             // Update UI
             updateBar(stamina, staminaCap, staminaBar);
         }
+
+        public void removeStamina(float drain)
+        {
+            stamina = (stamina - drain > 0) ? stamina - drain : 0;
+            
+            updateBar(stamina, staminaCap, staminaBar);
+        }
         
         public void heal(float healAmount)
         {
@@ -97,13 +103,23 @@ namespace DS {
             // Update UI
             updateBar(health, healthCap, healthBar);
         }
+
+        public float getStam()
+        {
+            return stamina;
+        }
+
+        public float getHealth()
+        {
+            return health;
+        }
         #endregion
 
         #region UI stuff
 
         private void updateBar(float numerator, float denominator, RectTransform bar)
         {
-            float percentage = -1f * numerator / denominator;
+            float percentage = 1f * numerator / denominator;
             bar.localScale = new Vector3(percentage, bar.localScale.y, bar.localScale.z);
         }
 

@@ -11,6 +11,10 @@ namespace DS
         InputHandler inputHandler;
         Vector3 moveDirection;
 
+        PlayerManager _pm;
+        public float rollCost;
+        public float sprintCost;
+        public float staminaRegen;
         public Transform myTransform;
         public Rigidbody RB;
         public GameObject normalCamera;
@@ -31,7 +35,7 @@ namespace DS
             myTransform = this.transform;
             AnimeHandler.init();
             _speed = 2f;
-
+            _pm = GetComponent<PlayerManager>();
         }
 
         private void Update()
@@ -63,19 +67,24 @@ namespace DS
             {
                 HandleRotation(delta);
             }
+            if(!AnimeHandler.anim.GetBool("isInteracting"))
+            {
+                _pm.replenishStamina(staminaRegen);
+            }
         }
 
         public void HandleRollingAndSprinting(float delta)
         {
             if (AnimeHandler.anim.GetBool("isInteracting")) return;
 
-            if (inputHandler.rollFlag)
+            if (inputHandler.rollFlag && _pm.getStam() > 0)
             {
                 moveDirection = cameraObject.forward * inputHandler.vertical;
                 moveDirection += cameraObject.right * inputHandler.horizontal;
 
                 if (inputHandler.moveAmount > 0)
                 {
+                    _pm.removeStamina(rollCost);
                     AnimeHandler.PlayerTargetAnimation("Rolling", true);
                     moveDirection.y = 0;
                     Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
