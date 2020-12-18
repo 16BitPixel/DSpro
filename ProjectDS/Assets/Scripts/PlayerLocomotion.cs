@@ -44,13 +44,19 @@ namespace DS
             
             inputHandler.tickInput(delta);
             
+            
             HandleMovement(delta);
 
             HandleRollingAndSprinting(delta);
+
+           
         }
 
         public void HandleMovement(float delta)
         {
+            if(AnimeHandler.anim.GetBool("isInteracting"))
+                return;
+
             moveDirection = cameraObject.forward * inputHandler.vertical;
             moveDirection += cameraObject.right * inputHandler.horizontal;
             moveDirection.Normalize();

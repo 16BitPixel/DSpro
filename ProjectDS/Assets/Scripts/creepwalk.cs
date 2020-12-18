@@ -22,6 +22,11 @@ public class creepwalk : MonoBehaviour
         [SerializeField]
         public float staminaCap;
         
+        public void onSpawn()
+        {
+            health = healthCap;
+            stamina = staminaCap;
+        }
         public void drainStamina(float drainRate)
         {
             if (stamina <=0)
@@ -84,8 +89,7 @@ public class creepwalk : MonoBehaviour
     #endregion
 
     #region transforms
-
-    public Camera cam;
+    
     private NavMeshAgent agent;
     public Transform player;
     public Transform parentCheckpoints;
@@ -114,6 +118,11 @@ public class creepwalk : MonoBehaviour
     #endregion
     void Start() {
         agent = GetComponent<NavMeshAgent>();
+        player = GameObject.Find("Player").transform;
+        parentCheckpoints = GameObject.Find("Checkpoints").transform;
+        anim = GetComponent<Animator>();
+        playerNeck = player.Find("Neck");
+        eyes = transform.Find("eyes");
         for (int i = 0; i < parentCheckpoints.childCount; i++)
         {            
             checkpoints.Add(parentCheckpoints.GetChild(i));
@@ -124,6 +133,7 @@ public class creepwalk : MonoBehaviour
         stats = new CreepStats();
         stats.healthCap = 100f;
         stats.staminaCap = 100f;
+        stats.onSpawn();
         // agent.updateRotation = false;
         StartCoroutine(Patrol());
         
@@ -158,6 +168,7 @@ public class creepwalk : MonoBehaviour
                 {
                     // StartCoroutine(Engage());
                     patrolling = false;
+
                     break;
                 }                                   
             }
@@ -195,10 +206,14 @@ public class creepwalk : MonoBehaviour
             }
             if (distance > leashThreshold)
             {
-                anim.SetBool("isAttacking", false);
-                anim.SetInteger("attackType", -1);         
                 
-                agent.stoppingDistance = 20f;
+                anim.SetBool("isAttacking", false);
+                anim.SetInteger("attackType", -1);                     
+                anim.SetBool("isMoving", true);
+                agent.ResetPath();
+                agent.isStopped = false;
+                agent.speed = (anim.deltaPosition / Time.deltaTime).magnitude;           
+                agent.stoppingDistance = leashThreshold;
                 agent.SetDestination(player.position);
             }
             else
@@ -208,27 +223,33 @@ public class creepwalk : MonoBehaviour
                 {
                     anim.SetBool("isAttacking", false);
                     anim.SetInteger("attackType", -1);
+                    anim.SetBool("isMoving", true);
+                    agent.ResetPath();
+                    agent.isStopped = false;
+                    agent.speed = (anim.deltaPosition / Time.deltaTime).magnitude;
                     // faceTarget(player.position);
                     // The distance at which to stop from the player.
                     agent.stoppingDistance = combatThreshold;
-                    agent.SetDestination(player.position);
+                    agent.SetDestination(player.position);                    
                 }
                 else
                 {
-                    agent.velocity = Vector3.zero;
+                    anim.SetBool("isAttacking", true);                    
+                    // agent.velocity = Vector3.zero;
                     agent.isStopped = true;
                     agent.ResetPath();
-                    if(stats.getStamina() > 0)
+                    if(stats.getStamina() > 0 && distance <= combatThreshold)
                     {
-                        int attackType = Random.Range(0, 3);
-                        anim.SetInteger("attackType", attackType);
-                        anim.SetBool("isAttacking", true);                        
-                        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length+anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
-                        anim.SetInteger("attackType", -1);
-                    }
+                        int attackType = getAttack();
+                        anim.SetInteger("attackType", attackType);                    
+                        // yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length + anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                        
+                        // continue;                     
+                    }                    
                 }
             }                                                
             yield return new WaitForSeconds(waitTime);
+            anim.SetInteger("attackType", -1);
         }
         yield return null;
     }
@@ -267,9 +288,20 @@ public class creepwalk : MonoBehaviour
         lookAt.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookAt);            
         if (Mathf.Abs(Quaternion.Angle(transform.rotation, rotation)) >= 0.9f)
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, Time.deltaTime * rotationSpeed);        
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, Time.deltaTime * rotationSpeed);               
+    }
 
-       
+    private int getAttack()
+    {
+        bool jump = Random.value > 0.96f;
+        if (jump)
+        {
+            return 2;
+        }
+        else
+        {
+            return Random.Range(0, 2);
+        }
     }
 
     

@@ -9,8 +9,8 @@ public class rootWalker : MonoBehaviour
     private Animator anim;
 
     private void Awake() {
-        anim = GetComponent<Animator>();        
-        // anim.SetBool("isAttacking", true);
+        anim = GetComponent<Animator>();       
+        agent = GetComponent<NavMeshAgent>();         
     }
     private void OnAnimatorMove() {
         bool isAttacking = anim.GetBool("isAttacking");
