@@ -155,7 +155,6 @@ public class creepwalk : MonoBehaviour
     }
     IEnumerator Patrol()
     {
-        Debug.Log("Patrolling");  
         // Replenish stamina when not in engage mode
         bool patrolling = true;
         while(patrolling)
@@ -191,8 +190,7 @@ public class creepwalk : MonoBehaviour
     IEnumerator Engage()
     {
         rotationSpeed = 9000;
-        bool engaging = true;
-        Debug.Log("Engaging");
+        bool engaging = true;        
         while(engaging)
         {
             if (player != null)

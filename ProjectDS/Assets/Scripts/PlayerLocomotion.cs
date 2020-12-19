@@ -49,12 +49,17 @@ namespace DS
 
             HandleRollingAndSprinting(delta);
 
+            HandleAttackInput();
+            // if (Input.GetMouseButtonDown(0))
+            // {
+            //     Debug.Log("CLICK");
+            // }
            
         }
 
         public void HandleMovement(float delta)
         {
-            if(AnimeHandler.anim.GetBool("isInteracting"))
+            if(AnimeHandler.anim.GetBool("isInteracting") || AnimeHandler.anim.GetBool("attacking"))
                 return;
 
             moveDirection = cameraObject.forward * inputHandler.vertical;
@@ -100,6 +105,16 @@ namespace DS
                 {
                     Debug.Log("Implement BackStep Animation");                    
                 }
+            }
+        }
+
+        public void HandleAttackInput()
+        {
+            if (inputHandler.attackInput && _pm.getStam() > 0)
+            {
+                // Stop to attack
+                RB.velocity = Vector3.zero;
+                AnimeHandler.PlayerAttackAnimation(true);
             }
         }
 

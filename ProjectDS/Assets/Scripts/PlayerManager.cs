@@ -33,7 +33,7 @@ namespace DS {
         {
             inputHandler.isInteracting = anim.GetBool("isInteracting");
             inputHandler.rollFlag = false;
-
+            inputHandler.attackInput = false;
 
             // Stamina bar tests
             // replenishStamina(45f);            

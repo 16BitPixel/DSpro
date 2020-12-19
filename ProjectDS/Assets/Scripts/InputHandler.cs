@@ -19,6 +19,7 @@ namespace DS
         Vector2 movementInput;
         Vector2 cameraInput;
 
+        public bool attackInput;
         private void Awake()
         {
             cameraHandler = CameraHandler.singleton;
@@ -41,7 +42,7 @@ namespace DS
             {
                 inputActions = new PlayerControls();
                 inputActions.PlayerMovement.Newaction.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
-                inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+                inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();                
             }
 
             inputActions.Enable();
@@ -56,6 +57,7 @@ namespace DS
         {
             moveInput(delta);
             HandleRollInput(delta);
+            HandleAttackInput();
         }
 
         private void moveInput(float delta)
@@ -73,7 +75,17 @@ namespace DS
 
             if (b_input)
             {
-                rollFlag = true;
+                rollFlag = true;                
+            }
+        }
+
+        private void HandleAttackInput()
+        {
+            // Mimic how rolling works
+            bool atk_input = inputActions.PlayerActions.Attack.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+            if(atk_input)
+            {
+                attackInput = true;                
             }
         }
 
