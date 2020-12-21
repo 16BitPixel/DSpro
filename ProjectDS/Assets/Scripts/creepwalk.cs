@@ -133,8 +133,7 @@ public class creepwalk : MonoBehaviour
         stats = new CreepStats();
         stats.healthCap = 100f;
         stats.staminaCap = 100f;
-        stats.onSpawn();
-        // agent.updateRotation = false;
+        stats.onSpawn();        
         StartCoroutine(Patrol());
         
     }
@@ -146,7 +145,7 @@ public class creepwalk : MonoBehaviour
         {            
             hasAcquiredPlayer  = true;                
         }
-        else if(distance > 3 * distanceFromPlayer)
+        else if(distance > 2 * distanceFromPlayer)
         {            
             hasAcquiredPlayer = false;
             los = false;
@@ -191,15 +190,17 @@ public class creepwalk : MonoBehaviour
     {
         rotationSpeed = 9000;
         bool engaging = true;        
-        while(engaging)
+        while(engaging && player != null)
         {
             if (player != null)
                 faceTarget(player.position);
             if (!los)
             {
+                anim.SetBool("isAttacking", false);
+                anim.SetInteger("attackType", -1);                     
+                anim.SetBool("isMoving", true);
                 engaging = false;        
-                agent.ResetPath();        
-                StartCoroutine(Patrol());                
+                agent.ResetPath();                                   
                 break;
             }
             if (distance > leashThreshold)
@@ -249,11 +250,14 @@ public class creepwalk : MonoBehaviour
             yield return new WaitForSeconds(waitTime);
             anim.SetInteger("attackType", -1);
         }
+        StartCoroutine(Patrol());
         yield return null;
     }
 
     private bool inLineOfSight()
-    {        
+    {
+        if (player == null)
+            return false;    
         if(los)
         {
             return true;
@@ -281,12 +285,16 @@ public class creepwalk : MonoBehaviour
 
     private void faceTarget(Vector3 target)
     {
-                
         Vector3 lookAt = target - transform.position;       
         lookAt.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookAt);            
         if (Mathf.Abs(Quaternion.Angle(transform.rotation, rotation)) >= 0.9f)
             transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, Time.deltaTime * rotationSpeed);               
+    }
+
+    public void takeDamage(float damage)
+    {
+        stats.takeDamage(damage);
     }
 
     private int getAttack()

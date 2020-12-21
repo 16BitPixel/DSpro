@@ -1612,7 +1612,7 @@ GameObject:
   - component: {fileID: 4765286421814869118}
   m_Layer: 0
   m_Name: Parasite
-  m_TagString: Untagged
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1869,6 +1869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damagingValue: 25
+  animationTime: 0.3
 --- !u!1 &7584334012152302117
 GameObject:
   m_ObjectHideFlags: 0
@@ -2364,3 +2365,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damagingValue: 25
+  animationTime: 0.3

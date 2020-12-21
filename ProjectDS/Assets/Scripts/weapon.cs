@@ -7,6 +7,7 @@ public class weapon : MonoBehaviour
     // Start is called before the first frame update
     public float damagingValue;
     private Animator animator;
+    public float animationTime = 0.3f;
     void Start()
     {
         animator = transform.root.GetComponent<Animator>();
@@ -18,10 +19,19 @@ public class weapon : MonoBehaviour
         {
             float normalizedTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
             float percent = normalizedTime - Mathf.Floor(normalizedTime);
-            if(percent > 0.5f && percent < 0.9f)
+            if(percent > animationTime)
             {
                 other.transform.GetComponent<DS.PlayerManager>().takeDamage(damagingValue);
             }            
+        }
+        else if (other.collider.tag == "Enemy")
+        {
+            float normalizedTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            float percent = normalizedTime - Mathf.Floor(normalizedTime);
+            if(percent > animationTime)
+            {
+                other.transform.GetComponent<creepwalk>().takeDamage(damagingValue);
+            }  
         }
     }
 }

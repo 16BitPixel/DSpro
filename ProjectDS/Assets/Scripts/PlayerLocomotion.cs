@@ -49,15 +49,11 @@ namespace DS
 
             HandleRollingAndSprinting(delta);
 
-            HandleAttackInput();
-            // if (Input.GetMouseButtonDown(0))
-            // {
-            //     Debug.Log("CLICK");
-            // }
+            HandleAttackInput();            
            
         }
 
-        public void HandleMovement(float delta)
+        private void HandleMovement(float delta)
         {
             if(AnimeHandler.anim.GetBool("isInteracting") || AnimeHandler.anim.GetBool("attacking"))
                 return;
@@ -84,7 +80,7 @@ namespace DS
             }
         }
 
-        public void HandleRollingAndSprinting(float delta)
+        private void HandleRollingAndSprinting(float delta)
         {
             if (AnimeHandler.anim.GetBool("isInteracting")) return;
 
@@ -108,13 +104,17 @@ namespace DS
             }
         }
 
-        public void HandleAttackInput()
+        private void HandleAttackInput()
         {
-            if (inputHandler.attackInput && _pm.getStam() > 0)
+            if(AnimeHandler.anim.GetBool("attacking")) return;
+            
+            if (inputHandler.attackInput && _pm.getStam() > 20f)
             {
                 // Stop to attack
                 RB.velocity = Vector3.zero;
                 AnimeHandler.PlayerAttackAnimation(true);
+                _pm.removeStamina(5f);
+                inputHandler.attackInput = false;
             }
         }
 

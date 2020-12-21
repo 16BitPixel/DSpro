@@ -33,10 +33,9 @@ namespace DS {
         {
             inputHandler.isInteracting = anim.GetBool("isInteracting");
             inputHandler.rollFlag = false;
-            inputHandler.attackInput = false;
-
+            inputHandler.attackInput = false;            
             // Stamina bar tests
-            // replenishStamina(45f);            
+                    
         }
 
         #region stat modifiers
@@ -59,18 +58,23 @@ namespace DS {
         
         // Function is called once every time the player object is hit/damaged by an enemy. Object is destroyed when health hits 0.
         public void takeDamage(float damageVal)
-        {                        
+        {
+            if (isPlayerIFramed())
+                return;               
             float target = health - damageVal;
             while (health > target && target > 0)
             {
                 health -= Time.deltaTime;
                 updateBar(health, healthCap, healthBar);
             }
+
             health = target > 0 ? target : 0;
             if (health == 0)
             {
                 Destroy(this.gameObject);
             }
+
+            // Update UI
             updateBar(health, healthCap, healthBar);
         }
 
@@ -91,8 +95,8 @@ namespace DS {
 
         public void removeStamina(float drain)
         {
-            stamina = (stamina - drain > 0) ? stamina - drain : 0;
-            
+            Debug.Log("Draining " + drain);
+            stamina = (stamina - drain > 0) ? stamina - drain : 0;            
             updateBar(stamina, staminaCap, staminaBar);
         }
         
@@ -113,6 +117,21 @@ namespace DS {
         {
             return health;
         }
+
+        private bool isPlayerIFramed()
+        {
+            if(anim.GetBool("isInteracting"))
+            {
+                float normalizedTime = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                float percent = normalizedTime - Mathf.Floor(normalizedTime);
+                if (percent < 0.4f)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
         #endregion
 
         #region UI stuff
@@ -123,10 +142,7 @@ namespace DS {
             bar.localScale = new Vector3(percentage, bar.localScale.y, bar.localScale.z);
         }
 
-        public void testDamage()
-        {
-            Debug.Log("Damaged!");
-        }
+        
         #endregion
     }
 }
