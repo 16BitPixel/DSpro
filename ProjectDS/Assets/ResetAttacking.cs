@@ -23,8 +23,7 @@ public class ResetAttacking : StateMachineBehaviour
         float normalizedTime = stateInfo.normalizedTime;
         float percent = normalizedTime - Mathf.Floor(normalizedTime);
         if (percent > 0.7f && percent < 0.99f)
-        {
-            Debug.Log("Ending attack frame");
+        {            
             animator.SetBool("attacking", false);
         }
         
