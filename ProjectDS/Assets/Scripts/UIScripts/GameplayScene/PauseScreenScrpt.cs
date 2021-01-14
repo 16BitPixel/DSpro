@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+using DS;
 
 public class PauseScreenScrpt : MonoBehaviour
 {
@@ -9,30 +11,38 @@ public class PauseScreenScrpt : MonoBehaviour
 
     public static bool gameIsPaused;
 
+    Keyboard kb;
+
 
     void Start()
     {
-        gameplayPanel.SetActive(true);
-        PausePanel.SetActive(false);
-        settingsPanel.SetActive(true);
+        gameIsPaused = false;
+
+        gameplayPanel.SetActive(!gameIsPaused);
+        PausePanel.SetActive(gameIsPaused);
+        settingsPanel.SetActive(gameIsPaused);
+
+        
+
+        kb = InputSystem.GetDevice<Keyboard>();
+
+        //inputActions = new PlayerControls();
+
+
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
+    {          
+        
+
+        if (kb.escapeKey.wasPressedThisFrame)
         {
-            if (gameIsPaused)
-            {
-                Resume();
-            }
+            if (gameIsPaused) Resume();
+            else Pause();
+        } 
 
-            else
-            {
-                Pause();
-            }
 
-        }
     }
 
     public void Resume()

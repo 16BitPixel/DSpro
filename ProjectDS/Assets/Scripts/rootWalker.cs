@@ -16,7 +16,11 @@ public class rootWalker : MonoBehaviour
         bool isAttacking = anim.GetBool("isAttacking");
         if(!isAttacking)
         {
-            agent.speed = (anim.deltaPosition / Time.deltaTime).magnitude;            
+            //.Log((anim.deltaPosition / Time.deltaTime).magnitude);
+            float speed = (anim.deltaPosition / Time.deltaTime).magnitude;
+            if(!float.IsNaN(speed))
+                agent.speed = (anim.deltaPosition / Time.deltaTime).magnitude;            
+
             anim.SetBool("isMoving", true);
         }   
         else
