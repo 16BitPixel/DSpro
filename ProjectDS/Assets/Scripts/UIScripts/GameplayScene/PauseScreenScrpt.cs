@@ -3,26 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using DS;
 
 public class PauseScreenScrpt : MonoBehaviour
 {
-    public GameObject PausePanel, settingsPanel, gameplayPanel;
+    public GameObject PauseUI, settingsUI, gameplayUI;
+
+    public GameObject gameSceneUiPanel;
 
     public static bool gameIsPaused;
 
     Keyboard kb;
 
-
+    bool _backgroundHasImage;
+    
     void Start()
     {
         gameIsPaused = false;
 
-        gameplayPanel.SetActive(!gameIsPaused);
-        PausePanel.SetActive(gameIsPaused);
-        settingsPanel.SetActive(gameIsPaused);
+        gameplayUI.SetActive(!gameIsPaused);
+        PauseUI.SetActive(gameIsPaused);
+        settingsUI.SetActive(gameIsPaused);
 
-        
+        _backgroundHasImage = false;        
 
         kb = InputSystem.GetDevice<Keyboard>();
 
@@ -30,6 +34,8 @@ public class PauseScreenScrpt : MonoBehaviour
 
 
     }
+
+
 
     // Update is called once per frame
     void Update()
@@ -45,11 +51,34 @@ public class PauseScreenScrpt : MonoBehaviour
 
     }
 
+    public void DisableBGImage()
+    {
+       if (_backgroundHasImage)
+       {
+            Color color = new Color(255, 255, 255, 0);
+            gameSceneUiPanel.GetComponent<Image>().color = color;
+            _backgroundHasImage = false;
+       }
+
+    }
+
+    public void EnableBGImage()
+    {
+        if (!_backgroundHasImage)
+        {
+            Color color = new Color(255, 255, 255, 255);
+            gameSceneUiPanel.GetComponent<Image>().color = color;
+            _backgroundHasImage = true;
+        }
+    }
+
     public void Resume()
     {
-        gameplayPanel.SetActive(true);
-        PausePanel.SetActive(false);
-        settingsPanel.SetActive(false);
+        DisableBGImage();
+        
+        gameplayUI.SetActive(true);
+        PauseUI.SetActive(false);
+        settingsUI.SetActive(false);
 
         Time.timeScale = 1f;
         gameIsPaused = false;
@@ -57,9 +86,11 @@ public class PauseScreenScrpt : MonoBehaviour
 
     void Pause()
     {
-        gameplayPanel.SetActive(false);
-        PausePanel.SetActive(true);
-        settingsPanel.SetActive(false);
+        EnableBGImage();
+        
+        gameplayUI.SetActive(false);
+        PauseUI.SetActive(true);
+        settingsUI.SetActive(false);
 
         Time.timeScale = 0f;
         gameIsPaused = true;
@@ -75,14 +106,14 @@ public class PauseScreenScrpt : MonoBehaviour
 
     public void EnableSettingsUI()
     {
-        PausePanel.SetActive(false);
-        settingsPanel.SetActive(true);
+        PauseUI.SetActive(false);
+        settingsUI.SetActive(true);
     }
 
     public void BackToPauseScreen()
     {
-        PausePanel.SetActive(true);
-        settingsPanel.SetActive(false);
+        PauseUI.SetActive(true);
+        settingsUI.SetActive(false);
     }
 
     public void ExitGame()
