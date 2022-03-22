@@ -15,6 +15,7 @@ public class weapon : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) {
         Debug.Log("Hit " + other.collider.name);
+         Debug.Log("Hit " + other.collider.name); // this is added for a push-check, safe to delete this. 
         if (other.collider.name == "Player" && animator.GetBool("isAttacking"))
         {
             float normalizedTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
