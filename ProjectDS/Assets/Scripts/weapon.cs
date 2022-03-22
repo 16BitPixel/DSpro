@@ -15,7 +15,7 @@ public class weapon : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) {
 
-        // To print something
+        // To print something, Ngork test
         Debug.Log("Hit " + other.collider.name); 
         if (other.collider.name == "Player" && animator.GetBool("isAttacking"))
         {
