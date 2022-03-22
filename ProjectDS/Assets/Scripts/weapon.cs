@@ -14,6 +14,8 @@ public class weapon : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision other) {
+
+        // To print something
         Debug.Log("Hit " + other.collider.name); 
         if (other.collider.name == "Player" && animator.GetBool("isAttacking"))
         {
