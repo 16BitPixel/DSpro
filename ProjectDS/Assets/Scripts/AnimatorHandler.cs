@@ -15,6 +15,7 @@ namespace DS
 
         public void init()
         {
+        print("");
             anim = GetComponent<Animator>();
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
