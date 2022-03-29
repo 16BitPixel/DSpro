@@ -28,7 +28,7 @@ public class JenkinsBuild
     // ------------------------------------------------------------------------
     // called from Jenkins
     // ------------------------------------------------------------------------
-    public static void BuildWindows64()
+    public static void BuildWindows645()
     {
         var args = FindArgs();
 
